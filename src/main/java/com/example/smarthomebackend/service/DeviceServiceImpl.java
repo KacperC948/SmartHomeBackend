@@ -18,6 +18,38 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public Boolean isAlreadySaved(String mac, String model) {
-        return null;
+        if (deviceRepository.findByMacAndModel(mac, model) != null){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+
+    @Override
+    public int getMaxId() {
+        String max = "";
+        try{
+            max = deviceRepository.getMaxId();
+            if(max.equalsIgnoreCase("NULL")){
+                return -1;
+            } else {
+                return Integer.parseInt(max);
+            }
+        } catch(Exception e) {
+            return -1;
+        }
+    }
+
+    @Override
+    public Device saveDevice(Device device) {
+        return deviceRepository.save(device);
+    }
+
+    @Override
+    public Device findByMacAndModel(String mac, String model) {
+        return deviceRepository.findByMacAndModel(mac, model);
+    }
+
+
 }

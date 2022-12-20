@@ -10,10 +10,11 @@ import java.util.Objects;
 
 
 
-@Entity(name="devices")
+@Entity
+@Table(name="devices")
 public class Device {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 
