@@ -15,15 +15,16 @@ public class Observation {
     private int id;
 
     @Column(name = "sensor_id")
+    @JsonProperty("sensorId")
     private int sensorId;
 
     @Column(name = "value")
     @JsonProperty("value")
-    private float value;
+    private Float value;
 
     @Column(name = "logical_value")
     @JsonProperty("logicalValue")
-    private boolean logicalValue;
+    private Boolean logicalValue;
 
     @Column(name = "creation_dt")
     private Date creationDt;
