@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface DeviceRepository extends JpaRepository<Device, Integer> {
     @Query("SELECT MAX(id) FROM Device")
     public String getMaxId();
+    @Query("SELECT u FROM Device u WHERE u.mac = ?1 and u.model= ?2")
     public Device findByMacAndModel(String mac, String model);
 }

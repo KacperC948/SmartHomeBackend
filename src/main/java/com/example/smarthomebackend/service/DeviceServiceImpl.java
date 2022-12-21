@@ -51,5 +51,4 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceRepository.findByMacAndModel(mac, model);
     }
 
-
 }

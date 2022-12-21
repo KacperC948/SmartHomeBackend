@@ -12,6 +12,6 @@ import java.util.List;
 public interface SensorRepository extends JpaRepository<Sensor, Integer> {
     @Query("SELECT MAX(id) FROM Sensor")
     String getMaxId();
-    @Query("SELECT u FROM Sensor u WHERE u.deviceId = ?1")
-    List<Sensor> findSensorsByDeviceId(int deviceId);
+    @Query("SELECT u FROM Sensor u WHERE u.device = ?1")
+    List<Sensor> findSensorsByDevice(Device deviceId);
 }

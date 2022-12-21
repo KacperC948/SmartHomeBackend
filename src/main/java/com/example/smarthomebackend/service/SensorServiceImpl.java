@@ -31,14 +31,14 @@ public class SensorServiceImpl implements SensorService{
 
     @Override
     public List<Sensor> saveSensors(List<Sensor> sensors, Device deviceId) {
-//        for (Sensor sensor : sensors) {
-//            sensor.setDeviceId(deviceId);
-//        }
+        for (Sensor sensor : sensors) {
+            sensor.setDevice(deviceId);
+        }
         return sensorRepository.saveAll(sensors);
     }
 
     @Override
-    public List<Sensor> findSensorsByDeviceId(int deviceId) {
-        return sensorRepository.findSensorsByDeviceId(deviceId);
+    public List<Sensor> findSensorsByDevice(Device deviceId) {
+        return sensorRepository.findSensorsByDevice(deviceId);
     }
 }

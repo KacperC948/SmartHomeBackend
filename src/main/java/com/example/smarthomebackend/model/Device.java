@@ -1,14 +1,12 @@
 package com.example.smarthomebackend.model;
 
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-
 
 @Entity
 @Table(name="devices")
@@ -31,7 +29,7 @@ public class Device {
 
     @JsonProperty("sensors")
     @Transient
-    @OneToMany(mappedBy = "deviceId")
+    @OneToMany(mappedBy = "device")
     private List<Sensor> sensors;
 
     public Device() {
@@ -70,23 +68,13 @@ public class Device {
         this.creationDate = creationDate;
     }
 
+    @JsonManagedReference
     public List<Sensor> getSensors() {
         return sensors;
     }
 
     public void setSensors(List<Sensor> sensors) {
         this.sensors = sensors;
-    }
-
-    @Override
-    public String toString() {
-        return "Device{" +
-                "id=" + id +
-                ", model='" + model + '\'' +
-                ", mac='" + mac + '\'' +
-                ", creationDate=" + creationDate +
-                ", sensors=" + sensors +
-                '}';
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.example.smarthomebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+
 @Entity
 @Table(name = "sensors")
 public class Sensor {
@@ -14,7 +16,7 @@ public class Sensor {
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "device_id")
-    private Device deviceId;
+    private Device device;
 
     @Column(name = "unit")
     @JsonProperty("unit")
@@ -39,12 +41,13 @@ public class Sensor {
         this.id = id;
     }
 
-    public Device getDeviceId() {
-        return deviceId;
+    @JsonBackReference
+    public Device getDevice() {
+        return device;
     }
 
-    public void setDeviceId(Device deviceId) {
-        this.deviceId = deviceId;
+    public void setDevice(Device deviceId) {
+        this.device = deviceId;
     }
 
     public String getUnit() {
@@ -69,17 +72,6 @@ public class Sensor {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Sensor{" +
-                "id=" + id +
-                ", deviceId=" + deviceId +
-                ", unit='" + unit + '\'' +
-                ", model='" + model + '\'' +
-                ", type='" + type + '\'' +
-                '}';
     }
 
     @Override
