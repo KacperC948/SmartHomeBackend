@@ -5,6 +5,8 @@ import com.example.smarthomebackend.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DeviceServiceImpl implements DeviceService {
 
@@ -49,6 +51,16 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device findByMacAndModel(String mac, String model) {
         return deviceRepository.findByMacAndModel(mac, model);
+    }
+
+    @Override
+    public Device getAllSensorsFromDevice(int deviceId) {
+        return deviceRepository.getDeviceById(deviceId);
+    }
+
+    @Override
+    public List<Device> getAllSensors() {
+        return deviceRepository.findAll();
     }
 
 }

@@ -41,4 +41,14 @@ public class SensorServiceImpl implements SensorService{
     public List<Sensor> findSensorsByDevice(Device deviceId) {
         return sensorRepository.findSensorsByDevice(deviceId);
     }
+
+    @Override
+    public Sensor getSensorBySensorId(int sensorId) {
+        return sensorRepository.getSensorById(sensorId);
+    }
+
+    @Override
+    public List<Sensor> getAllSensor() {
+        return sensorRepository.findAll();
+    }
 }

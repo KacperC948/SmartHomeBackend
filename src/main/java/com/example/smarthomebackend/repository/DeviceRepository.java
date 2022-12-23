@@ -11,4 +11,5 @@ public interface DeviceRepository extends JpaRepository<Device, Integer> {
     public String getMaxId();
     @Query("SELECT u FROM Device u WHERE u.mac = ?1 and u.model= ?2")
     public Device findByMacAndModel(String mac, String model);
+    public Device getDeviceById(int devideId);
 }

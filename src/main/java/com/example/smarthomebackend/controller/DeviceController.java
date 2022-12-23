@@ -2,14 +2,16 @@ package com.example.smarthomebackend.controller;
 
 import com.example.smarthomebackend.model.Device;
 import com.example.smarthomebackend.model.Sensor;
+import com.example.smarthomebackend.model.User;
 import com.example.smarthomebackend.service.DeviceService;
 import com.example.smarthomebackend.service.SensorService;
+import com.example.smarthomebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,22 +23,41 @@ public class DeviceController {
     @Autowired
     private SensorService sensorService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-    public Device registerDevice(@RequestBody Device device) {
-        Device deviceTemp;
-        if (deviceService.getMaxId() == -1){
-            deviceTemp = deviceService.saveDevice(device);
-            device.setSensors(sensorService.saveSensors(device.getSensors(), device));
+    public Device registerDevice(@RequestBody Device device) throws ParseException {
+        Device deviceTemp = new Device();
+        if (deviceService.isAlreadySaved(device.getMac(), device.getModel())) {
+            deviceTemp = deviceService.findByMacAndModel(device.getMac(), device.getModel());
+            List<Sensor> sensorList = sensorService.findSensorsByDevice(deviceTemp);
+            deviceTemp.setSensors(sensorList);
+            return deviceTemp;
         } else {
-            if (deviceService.isAlreadySaved(device.getMac(), device.getModel())) {
-                deviceTemp = deviceService.findByMacAndModel(device.getMac(), device.getModel());
-                List<Sensor> sensorList = sensorService.findSensorsByDevice(deviceTemp);
-                deviceTemp.setSensors(sensorList);
-            } else {
-                deviceTemp = deviceService.saveDevice(device);
-                deviceTemp.setSensors(sensorService.saveSensors(device.getSensors(), device));
-            }
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            User user = userService.getUserByMac(device.getMac());
+            device.setCreationDate(formatter.parse(formatter.format(date)));
+            device.setUser(user);
+            deviceService.saveDevice(device);
+            device.setSensors(sensorService.saveSensors(device.getSensors(), device));
+            user.getDevices().add(device);
+            List<Device> deviceSaveToUser = user.getDevices();
+            userService.updateUser(deviceSaveToUser, user.getId());
+            return device;
         }
-        return deviceTemp;
+    }
+
+
+    @GetMapping(value = "/{deviceId}/getSensors")
+    public List<Sensor> getAllSensorsFromDevice(@PathVariable int deviceId) {
+        Device device = deviceService.getAllSensorsFromDevice(deviceId);
+        return device.getSensors();
+    }
+
+    @GetMapping(value = "getAll")
+    public List<Device> getAllSensors() {
+        return deviceService.getAllSensors();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.smarthomebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Table(name="devices")
 public class Device {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -28,9 +29,12 @@ public class Device {
     private Date creationDate;
 
     @JsonProperty("sensors")
-    @Transient
     @OneToMany(mappedBy = "device")
     private List<Sensor> sensors;
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Device() {
 
@@ -75,6 +79,15 @@ public class Device {
 
     public void setSensors(List<Sensor> sensors) {
         this.sensors = sensors;
+    }
+
+    @JsonBackReference
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

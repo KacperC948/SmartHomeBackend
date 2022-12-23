@@ -1,5 +1,7 @@
 package com.example.smarthomebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -26,6 +28,7 @@ public class Observation {
     @JsonProperty("logicalValue")
     private Boolean logicalValue;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy HH:mm:ss", timezone="CET")
     @Column(name = "creation_dt")
     private Date creationDt;
 
@@ -40,19 +43,21 @@ public class Observation {
         this.id = id;
     }
 
-    public float getValue() {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Float getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(Float value) {
         this.value = value;
     }
 
-    public boolean isLogicalValue() {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Boolean getLogicalValue() {
         return logicalValue;
     }
 
-    public void setLogicalValue(boolean logicalValue) {
+    public void setLogicalValue(Boolean logicalValue) {
         this.logicalValue = logicalValue;
     }
 
