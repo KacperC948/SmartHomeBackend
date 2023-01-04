@@ -1,12 +1,9 @@
 package com.example.smarthomebackend.service;
 
-import com.example.smarthomebackend.model.Device;
 import com.example.smarthomebackend.model.User;
 import com.example.smarthomebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(List<Device> devices, int userId) {
-        userRepository.updateUser(devices, userId);
+    public User getUserById(int id) {
+        return userRepository.getUserById(id);
     }
 }

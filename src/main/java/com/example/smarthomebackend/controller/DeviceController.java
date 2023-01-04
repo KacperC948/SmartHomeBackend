@@ -43,12 +43,9 @@ public class DeviceController {
             deviceService.saveDevice(device);
             device.setSensors(sensorService.saveSensors(device.getSensors(), device));
             user.getDevices().add(device);
-            List<Device> deviceSaveToUser = user.getDevices();
-            userService.updateUser(deviceSaveToUser, user.getId());
             return device;
         }
     }
-
 
     @GetMapping(value = "/{deviceId}/getSensors")
     public List<Sensor> getAllSensorsFromDevice(@PathVariable int deviceId) {
