@@ -53,7 +53,7 @@ public class DeviceController {
         return device.getSensors();
     }
 
-    @GetMapping(value = "getAll")
+    @GetMapping(value = "/getAll")
     public List<Device> getAllSensors() {
         return deviceService.getAllSensors();
     }

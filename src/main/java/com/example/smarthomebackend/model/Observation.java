@@ -3,7 +3,7 @@ package com.example.smarthomebackend.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Objects;
