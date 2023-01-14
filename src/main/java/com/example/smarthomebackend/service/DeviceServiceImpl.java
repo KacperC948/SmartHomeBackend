@@ -29,21 +29,6 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public int getMaxId() {
-        String max = "";
-        try{
-            max = deviceRepository.getMaxId();
-            if(max.equalsIgnoreCase("NULL")){
-                return -1;
-            } else {
-                return Integer.parseInt(max);
-            }
-        } catch(Exception e) {
-            return -1;
-        }
-    }
-
-    @Override
     public Device saveDevice(Device device) {
         return deviceRepository.save(device);
     }
@@ -54,7 +39,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device getAllSensorsFromDevice(int deviceId) {
+    public Device getDeviceById(int deviceId) {
         return deviceRepository.getDeviceById(deviceId);
     }
 

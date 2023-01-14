@@ -30,4 +30,5 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) {
         return userRepository.getUserByUsername(username);
     }
+
 }

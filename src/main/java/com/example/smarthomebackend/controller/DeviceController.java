@@ -49,12 +49,12 @@ public class DeviceController {
 
     @GetMapping(value = "/{deviceId}/getSensors")
     public List<Sensor> getAllSensorsFromDevice(@PathVariable int deviceId) {
-        Device device = deviceService.getAllSensorsFromDevice(deviceId);
+        Device device = deviceService.getDeviceById(deviceId);
         return device.getSensors();
     }
 
     @GetMapping(value = "/getAll")
-    public List<Device> getAllSensors() {
+    public List<Device> getAllDevices() {
         return deviceService.getAllSensors();
     }
 }

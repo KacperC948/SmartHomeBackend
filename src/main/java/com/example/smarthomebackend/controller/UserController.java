@@ -1,6 +1,8 @@
 package com.example.smarthomebackend.controller;
 
+import com.example.smarthomebackend.model.Sensor;
 import com.example.smarthomebackend.model.User;
+import com.example.smarthomebackend.service.SensorService;
 import com.example.smarthomebackend.service.UserService;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -11,14 +13,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SensorService sensorService;
 
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     public User addUser(@RequestBody User user){
@@ -64,22 +72,28 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestBody User user){
+    @PostMapping(value = "/login", produces = "application/json")
+    public ResponseEntity<User> login(@RequestBody User user){
          JSONObject jsonObject = new JSONObject();
          try {
              User userAlreadySaved = userService.getUserByUsername(user.getUsername());
              if(userAlreadySaved != null){
                  if(passwordEncoder.matches(user.getPassword(), userAlreadySaved.getPassword())){
+                     User userToReturn = new User();
                      jsonObject.put("message", user.getUsername() + "login successfully");
-                     return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+                     userToReturn.setId(userAlreadySaved.getId());
+                     userToReturn.setUsername(userAlreadySaved.getUsername());
+                     userToReturn.setMac(userAlreadySaved.getMac());
+                     userToReturn.setDevices(userAlreadySaved.getDevices());
+                     jsonObject.put("user", userToReturn);
+                     return new ResponseEntity<>(userToReturn, HttpStatus.OK);
                  } else {
                      jsonObject.put("message", "password is not correct");
-                     return new ResponseEntity<>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
+                     return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
                  }
              } else {
                  jsonObject.put("message", "Username or email is incorrect");
-                 return new ResponseEntity<>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
+                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
              }
          } catch (JSONException e){
              try{
@@ -87,9 +101,20 @@ public class UserController {
              }  catch (JSONException e1) {
                  e1.printStackTrace();
              }
-             return new ResponseEntity<>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
+             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
          }
     }
 
+    @GetMapping(value = "/get/{id}/getSensors", produces = "application/json")
+    public List<Sensor> getAllSensorsFromUser(@PathVariable int id){
+        User user = userService.getUserById(id);
+        //return sensorService.getAllSensorByUser(user);
+//        List<Device> devices = user.getDevices();
+//        for(Device device : devices){
+//            List<Sensor> sensorList = devices.iterator().getSensors();
+//            sensors.add(device.getSensors());
+//        }
+        return null;
+    }
 
 }
