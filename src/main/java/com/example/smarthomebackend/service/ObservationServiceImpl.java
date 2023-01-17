@@ -5,6 +5,7 @@ import com.example.smarthomebackend.repository.ObservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,5 +33,17 @@ public class ObservationServiceImpl implements ObservationService {
     @Override
     public List<Observation> getAllObservationsForSensorFromTimespan(int sensorId, Date startDate, Date endDate) {
         return observationRepository.findAllBySensorIdAndCreationDtBetween(sensorId,startDate,endDate);
+    }
+
+    @Override
+    public List<Observation> getAllObservationGreaterThan(int sensorId, float value) {
+        List<Observation> observations = new ArrayList<>();
+        observations.add(observationRepository.findObservationBySensorIdAndValueGreaterThanOrderByCreationDtDesc(sensorId, value).get(0));
+        return observations;
+    }
+
+    @Override
+    public Observation getLastObservationFromSensor(int sensorId) {
+        return observationRepository.findTopBySensorIdOrderByIdDesc(sensorId);
     }
 }

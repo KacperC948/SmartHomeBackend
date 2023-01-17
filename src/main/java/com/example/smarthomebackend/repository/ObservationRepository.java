@@ -11,4 +11,6 @@ import java.util.List;
 public interface ObservationRepository extends JpaRepository<Observation, Integer> {
     List<Observation> findAllBySensorId(int sensorId);
     List<Observation> findAllBySensorIdAndCreationDtBetween(int sensorId, Date startDate, Date endDate);
+    List<Observation> findObservationBySensorIdAndValueGreaterThanOrderByCreationDtDesc(int sensorId, float value);
+    Observation findTopBySensorIdOrderByIdDesc(int sensorId);
 }

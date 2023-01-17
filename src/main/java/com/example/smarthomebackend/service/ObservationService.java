@@ -10,4 +10,6 @@ public interface ObservationService {
     List<Observation> getAllObserations();
     List<Observation> getAllObserationsFromSensor(int sensorId);
     List<Observation> getAllObservationsForSensorFromTimespan(int sensorId, Date startDate, Date endDate);
+    List<Observation> getAllObservationGreaterThan(int sensorId, float value);
+    Observation getLastObservationFromSensor(int sensorId);
 }
