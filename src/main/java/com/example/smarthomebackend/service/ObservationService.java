@@ -6,10 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 public interface ObservationService {
-    public void addObservation(Observation observation);
-    List<Observation> getAllObserations();
-    List<Observation> getAllObserationsFromSensor(int sensorId);
+    void addObservation(Observation observation);
+    List<Observation> getAllObservations();
+    List<Observation> getAllObservationsFromSensor(int sensorId);
     List<Observation> getAllObservationsForSensorFromTimespan(int sensorId, Date startDate, Date endDate);
     List<Observation> getAllObservationGreaterThan(int sensorId, float value);
     Observation getLastObservationFromSensor(int sensorId);
+    Observation getLastDateOfRainDetected(int sensorId, boolean logicalValue);
 }

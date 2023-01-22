@@ -21,12 +21,12 @@ public class ObservationServiceImpl implements ObservationService {
     }
 
     @Override
-    public List<Observation> getAllObserations() {
+    public List<Observation> getAllObservations() {
         return observationRepository.findAll();
     }
 
     @Override
-    public List<Observation> getAllObserationsFromSensor(int sensorId) {
+    public List<Observation> getAllObservationsFromSensor(int sensorId) {
         return observationRepository.findAllBySensorId(sensorId);
     }
 
@@ -45,5 +45,10 @@ public class ObservationServiceImpl implements ObservationService {
     @Override
     public Observation getLastObservationFromSensor(int sensorId) {
         return observationRepository.findTopBySensorIdOrderByIdDesc(sensorId);
+    }
+
+    @Override
+    public Observation getLastDateOfRainDetected(int sensorId, boolean logicalValue) {
+        return observationRepository.findTopBySensorIdAndLogicalValueEqualsOrderByCreationDtDesc(sensorId, logicalValue);
     }
 }

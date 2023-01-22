@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DeviceRepository extends JpaRepository<Device, Integer> {
     Device findByMacAndModel(String mac, String model);
-    Device getDeviceById(int devideId);
-    //List<Sensor> getDeviceByUser();
+    Device getDeviceById(int deviceId);
 }

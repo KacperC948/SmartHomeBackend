@@ -43,17 +43,17 @@ public class ObservationController {
     }
 
     @GetMapping(value = "/getAll")
-    public List<Observation> getllObservations(){
-        return observationService.getAllObserations();
+    public List<Observation> getAllObservations(){
+        return observationService.getAllObservations();
     }
 
     @GetMapping(value = "/get/{sensorId}")
-    public List<Observation> getllObservationsFromSensor(@PathVariable int sensorId){
+    public List<Observation> getAllObservationsFromSensor(@PathVariable int sensorId){
         Sensor sensor = sensorService.getSensorBySensorId(sensorId);
         if(sensor.getType().equals("soil")){
             return observationService.getAllObservationGreaterThan(sensorId, 400f);
         }
-        return observationService.getAllObserationsFromSensor(sensorId);
+        return observationService.getAllObservationsFromSensor(sensorId);
     }
 
     @GetMapping(value = "/getAll/{sensorId}/{startDate}/{endDate}")
@@ -90,13 +90,28 @@ public class ObservationController {
         return observation;
     }
 
+    @GetMapping(value = "/getLastDateOfRainDetected/{userId}")
+    public Observation getLastDateOfRainDetected(@PathVariable int userId) {
+        Observation observation = new Observation();
+        List<Sensor> sensorList = SensorUtil.getSensorsFromUser(userService.getUserById(userId));
+        for (Sensor sensor : sensorList) {
+            if (sensor.getType().equals("rain")) {
+                observation = observationService.getLastDateOfRainDetected(sensor.getId(), true);
+            }
+        }
+        return observation;
+    }
+
     @GetMapping(value = "/get/{userId}/{type}")
     public List<Observation> getObservationForUserAndSensorType(@PathVariable int userId, @PathVariable String type) {
         List<Sensor> sensorList = SensorUtil.getSensorsFromUser(userService.getUserById(userId));
         List<Observation> observations = new ArrayList<>();
         for(Sensor sensor: sensorList){
             if(sensor.getType().equals(type)){
-                observations = observationService.getAllObserationsFromSensor(sensor.getId());
+                if(type.equals("soil")){
+                        return observationService.getAllObservationGreaterThan(sensor.getId(), 400f);
+                }
+                observations = observationService.getAllObservationsFromSensor(sensor.getId());
             }
         }
         return observations;
@@ -109,7 +124,7 @@ public class ObservationController {
         List<Observation> observations = new ArrayList<>();
         for(Sensor sensor: sensorList){
             if(sensor.getType().equals(type)){
-                observations = observationService.getAllObserationsFromSensor(sensor.getId());
+                observations = observationService.getAllObservationsFromSensor(sensor.getId());
             }
         }
 

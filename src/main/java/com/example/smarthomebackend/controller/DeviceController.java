@@ -26,9 +26,9 @@ public class DeviceController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/register", produces = "application/json")
     public Device registerDevice(@RequestBody Device device) throws ParseException {
-        Device deviceTemp = new Device();
+        Device deviceTemp;
         if (deviceService.isAlreadySaved(device.getMac(), device.getModel())) {
             deviceTemp = deviceService.findByMacAndModel(device.getMac(), device.getModel());
             List<Sensor> sensorList = sensorService.findSensorsByDevice(deviceTemp);

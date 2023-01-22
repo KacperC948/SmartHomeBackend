@@ -13,4 +13,5 @@ public interface ObservationRepository extends JpaRepository<Observation, Intege
     List<Observation> findAllBySensorIdAndCreationDtBetween(int sensorId, Date startDate, Date endDate);
     List<Observation> findObservationBySensorIdAndValueGreaterThanOrderByCreationDtDesc(int sensorId, float value);
     Observation findTopBySensorIdOrderByIdDesc(int sensorId);
+    Observation findTopBySensorIdAndLogicalValueEqualsOrderByCreationDtDesc(int sensorId, boolean logicalValue);
 }
